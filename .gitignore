@@ -1,0 +1,10 @@
+# Ignore Windows system files
+AppData/
+Documents/
+Desktop.ini
+Thumbs.db
+*.log
+*.tmp
+bin/
+obj/
+*.user
