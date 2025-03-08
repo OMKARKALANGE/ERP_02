@@ -11,7 +11,7 @@ namespace Erp_02.Models
         [Key]
         public int id { get; set; }
 
-        public int role { get; set; }
+        public string role { get; set; }
         public string username { get; set; }
 
         public string password { get; set; }
