@@ -5,49 +5,77 @@
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/StyleSheets/LoginStyle.css">
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.role)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.password)
-            </th>
-            <th></th>
-        </tr>
-    
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.role)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.password)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.id })
-            </td>
-        </tr>
-    }
-    
-    </table>
+    <div class="container">
+        <h2>Login</h2>
+        <form>
+            <div class="form-group">
+                <label for="role">Select Role</label>
+                <select id="role">
+                    <option value="">-- Select Role --</option>
+                    @foreach (var item in Model.Select(m => m.role).Distinct())
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" />
+            </div>
+            <div class="buttons">
+                <button type="button" class="login-btn" onclick="login()">Login</button>
+                <button type="button" class="cancel-btn" onclick="clearFields()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const users = [
+        @foreach (var user in Model) {
+            @: { role: "@user.role", username: "@user.username", password: "@user.password" },
+        }
+    ];
+        function login() {
+            const role = document.getElementById('role').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!role || !username || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            const user = users.find(u => u.role === role && u.username === username);
+
+            if (!user) {
+                alert('Invalid user for selected role.');
+                return;
+            }
+
+            if (user.password !== password) {
+                alert('Invalid password.');
+                return;
+            }
+
+            alert('Login successful!');
+        }
+
+        function clearFields() {
+            document.getElementById('role').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+    </script>
 </body>
 </html>
